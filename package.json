@@ -1,0 +1,9 @@
+{
+  "name": "markdress",
+  "version": "0.0.1",
+  "dependencies": {
+    "request":"",
+    "express":"",
+    "markdown-js":""
+  }
+}
