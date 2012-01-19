@@ -4,6 +4,8 @@
   "dependencies": {
     "request":"",
     "express":"",
-    "markdown-js":""
+    "markdown-js":"",
+    "jade":"",
+    "mime":""
   }
 }
