@@ -29,7 +29,7 @@ app.get('/*', function(req,res) {
       if (type === "text/plain") {  
         var title = body.split('\n')[0].substr(0,20);
         var content = markdown.makeHtml(body);
-        content = content.replace(/<img src="\//, "<img src=\"" + path);
+        content = content.replace(/<img src="\//g, "<img src=\"" + path);
 
 	res.render("markdown.jade", { title: title || url, dropbox: path, content: content });
       } else {
