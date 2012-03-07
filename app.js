@@ -19,16 +19,21 @@ app.get('/status', function(req,res) {
 app.get('/*', function(req,res) {
   var url = 'http://'+config.root+req.url;
   var type = mime.lookup(url);
+  var path = 'http://'+config.root+req.url.substr(0,req.url.lastIndexOf("/")+1);
   var encoding = type === "text/plain" ? "utf8" : "binary";
 
   sys.log("Requesting " + url + " with type " + type);
+
   request({url:url,encoding:encoding}, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       if (type === "text/plain") {  
-        res.render("markdown.jade", { title: "Home", markdown: markdown, 
-content: body });
+        var title = body.split('\n')[0].substr(0,20);
+        var content = markdown.makeHtml(body);
+        content = content.replace(/<img src="\//, "<img src=\"" + path);
+
+	res.render("markdown.jade", { title: title || url, dropbox: path, content: content });
       } else {
-         res.send(new Buffer(body, 'binary'),{'Content-Type': type}, 200);
+        res.send(new Buffer(body, 'binary'),{'Content-Type': type}, 200);
       }
     } else if (error) {
       res.render("error.jade", { title: "Error", error: error });
